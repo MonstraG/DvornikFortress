@@ -1,8 +1,7 @@
-package com.arseniy
-
 import java.util.concurrent.ConcurrentLinkedQueue
 
 var gameRunning = true
+val gameMap = Map()
 
 fun main(args: Array<String>) {
     Input.start()
@@ -28,9 +27,15 @@ object Game: Thread() {
                 val buttonCode = Input.queue.remove()
                 val button = buttonCode.toChar().toLowerCase()
                 val buttonCodeLower = button.toInt()
-                if (buttonCode == 27)
+                if (button == 'q')
                     gameRunning = false
+
                 println("$button ($buttonCode, lower: $buttonCodeLower)")
             }
+    }
+
+    fun drawMap() {
+        //todo
+        println(gameMap.map)
     }
 }
