@@ -1,6 +1,8 @@
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Font
+import java.io.File
+import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.JTextPane
 
@@ -9,6 +11,8 @@ class GameFrame: JFrame() {
     val input = KeyListenerImpl()
     init {
         title = "Dvornik Fortress"
+        val image = ImageIO.read(File("src/resources/dvornik_fortress.png"))
+        iconImage = image
 
         defaultCloseOperation = EXIT_ON_CLOSE
         background = Color.BLACK
