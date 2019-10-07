@@ -1,30 +1,18 @@
-import java.util.concurrent.ConcurrentLinkedQueue
+import java.lang.StringBuilder
 
 var gameRunning = true
 val gameMap = Map()
+var gameFrame = GameFrame()
 
-fun main(args: Array<String>) {
-    Input.start()
+fun main() {
     Game.start()
-    Game.join()
-}
-
-object Input: Thread() {
-    val queue = ConcurrentLinkedQueue<Int>()
-
-    override fun run() {
-        while (gameRunning) {
-            queue.add(RawConsoleInput.read(true))
-        }
-
-    }
 }
 
 object Game: Thread() {
     override fun run() {
-        while (gameRunning)
-            if (Input.queue.isNotEmpty()) {
-                val buttonCode = Input.queue.remove()
+        while (gameRunning) {
+            if (gameFrame.input.queue.isNotEmpty()) {
+                val buttonCode = gameFrame.input.queue.remove()
                 val button = buttonCode.toChar().toLowerCase()
                 val buttonCodeLower = button.toInt()
                 if (button == 'q')
@@ -32,10 +20,23 @@ object Game: Thread() {
 
                 println("$button ($buttonCode, lower: $buttonCodeLower)")
             }
+            drawMap()
+            sleep(16)
+        }
+        gameFrame.dispose()
     }
 
     fun drawMap() {
-        //todo
-        println(gameMap.map)
+        val map = StringBuilder()
+
+        val widthBounds = gameMap.getVisibleWidthBounds()
+        val heightBounds = gameMap.getVisibleHeightBounds()
+        for (y in heightBounds.first..heightBounds.second) {
+            for (x in widthBounds.first..widthBounds.second) {
+                map.append(gameMap.map[x][y])
+            }
+            map.append("\n")
+        }
+        gameFrame.textPane.text = map.toString()
     }
 }
