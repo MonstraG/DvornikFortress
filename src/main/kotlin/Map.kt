@@ -24,23 +24,23 @@ class Map(val height: Int = 256, val width: Int = 256) {
 
     fun getVisibleWidthBounds(): Pair<Int, Int> {
         return Pair(
-            (cursor.posX - cursor.width).coerceAtLeast(0),
-            (cursor.posX + cursor.width).coerceAtMost(width)
+            cursor.posX - cursor.width,
+            cursor.posX + cursor.width
         )
     }
 
     fun getVisibleHeightBounds(): Pair<Int, Int> {
         return Pair(
-            (cursor.posY - cursor.height).coerceAtLeast(0),
-            (cursor.posY + cursor.height).coerceAtMost(height)
+            cursor.posY - cursor.height,
+            cursor.posY + cursor.height
         )
     }
 }
 
 class Cursor {
     //current position of the screen center
-    var posX = 128
-    var posY = 128
+    var posX = 0
+    var posY = 0
     //var posZ = 32; //will be added later
 
     //we draw %width blocks to the left of the cursor, and same amount to the right

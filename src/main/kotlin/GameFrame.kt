@@ -7,7 +7,7 @@ import javax.swing.JFrame
 import javax.swing.JTextPane
 
 class GameFrame: JFrame() {
-    val textPane = TextPane()
+    val mapPane = MapPane()
     val input = KeyListenerImpl()
     init {
         title = "Dvornik Fortress"
@@ -16,23 +16,29 @@ class GameFrame: JFrame() {
 
         defaultCloseOperation = EXIT_ON_CLOSE
         background = Color.BLACK
-        textPane.background = Color.BLACK
         setSize(800, 400)
         setLocationRelativeTo(null)
         isVisible = true
 
-        contentPane.add(textPane, BorderLayout.CENTER)
+        contentPane.add(mapPane, BorderLayout.CENTER)
 
         addKeyListener(input)
     }
 }
 
-class TextPane: JTextPane() {
+class MapPane: JTextPane() {
     init {
-        val font = Font("Courier New", Font.PLAIN, 12)
+        val font = Font(Font.MONOSPACED, Font.PLAIN, 12)
         setFont(font)
+        background = Color.BLACK
         foreground = Color.LIGHT_GRAY
         isEnabled = false
         isEditable = false
+    }
+}
+
+class HelpPane: JTextPane() {
+    init {
+
     }
 }
