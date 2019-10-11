@@ -32,17 +32,19 @@ object Game: Thread() {
         val widthBounds = gameMap.getVisibleWidthBounds()
         val heightBounds = gameMap.getVisibleHeightBounds()
 
+        map.append("<tt>")
         for (y in heightBounds.first..heightBounds.second) {
             for (x in widthBounds.first..widthBounds.second) {
                 if (x < 0 || y < 0 || x > gameMap.width || y > gameMap.height) {
-                    map.append(' ')
+                    map.append("&nbsp;")
                 } else {
                     map.append(gameMap.map[x][y])
                 }
             }
-            map.append("\n")
+            map.append("<br>")
         }
-        gameFrame.mapPane.text = map.toString()
+        map.append("</tt>")
 
+        gameFrame.mapPane.text = map.toString()
     }
 }

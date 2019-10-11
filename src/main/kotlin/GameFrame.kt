@@ -34,11 +34,13 @@ class MapPane: JTextPane() {
         foreground = Color.LIGHT_GRAY
         isEnabled = false
         isEditable = false
+        contentType = "text/html"
     }
 }
 
 class HelpPane: JTextPane() {
     init {
-
+//        Don't forget to change BorderLayout for MapPane
+//        contentPane.add(mapPane, BorderLayout.RIGHT)
     }
 }
