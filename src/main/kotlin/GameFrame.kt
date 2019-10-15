@@ -35,7 +35,7 @@ class GameFrame: JFrame() {
         val buttonCode = e.code.code
         buttonMap[buttonCode]?.invoke()
 
-        println("${e.character} (${buttonCode}")
-        println("${gameMap.cursor.posX}, ${gameMap.cursor.posY}\n")
+        println("button pressed - ${buttonCode}")
+        println("pos - (${gameMap.cursor.posX}, ${gameMap.cursor.posY})\n")
     }
 }

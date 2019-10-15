@@ -26,7 +26,7 @@ object Game: Thread() {
         val widthBounds = gameMap.getVisibleWidthBounds()
         val heightBounds = gameMap.getVisibleHeightBounds()
 
-        map.append("<html><tt>")
+        map.append("<html style=\"background: black; color:white\"><tt>")
         for (y in heightBounds.first..heightBounds.second) {
             for (x in widthBounds.first..widthBounds.second) {
                 //todo: fix right corner
@@ -34,7 +34,7 @@ object Game: Thread() {
                     map.append("&nbsp;")
                 } else {
                     if (x == gameMap.cursor.posX && y == gameMap.cursor.posY){
-                        map.append("<span style = \"color:red\" >${gameMap.map[x][y]}</span>")
+                        map.append("<span style=\"color:red\" >${gameMap.map[x][y]}</span>")
                     }
                     else {
                         map.append(gameMap.map[x][y])
