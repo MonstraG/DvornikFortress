@@ -11,17 +11,21 @@ fun q() {
 }
 
 fun upArrow() {
-    gameMap.cursor.posY = (gameMap.cursor.posY - 1).coerceAtLeast(0).coerceAtMost(gameMap.height)
+    gameMap.cursor.posY = bound(gameMap.cursor.posY - 1, gameMap.height)
 }
 
 fun downArrow() {
-    gameMap.cursor.posY = (gameMap.cursor.posY + 1).coerceAtLeast(0).coerceAtMost(gameMap.height)
+    gameMap.cursor.posY = bound(gameMap.cursor.posY + 1, gameMap.height)
 }
 
 fun rightArrow() {
-    gameMap.cursor.posX = (gameMap.cursor.posX + 1).coerceAtLeast(0).coerceAtMost(gameMap.width)
+    gameMap.cursor.posX = bound(gameMap.cursor.posX + 1, gameMap.width)
 }
 
 fun leftArrow() {
-    gameMap.cursor.posX = (gameMap.cursor.posX - 1).coerceAtLeast(0).coerceAtMost(gameMap.width)
+    gameMap.cursor.posX = bound(gameMap.cursor.posX - 1, gameMap.width)
+}
+
+fun bound(value: Int, max: Int): Int {
+    return value.coerceAtLeast(0).coerceAtMost(max - 1)
 }

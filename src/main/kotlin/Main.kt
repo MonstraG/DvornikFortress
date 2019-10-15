@@ -30,7 +30,7 @@ object Game: Thread() {
         for (y in heightBounds.first..heightBounds.second) {
             for (x in widthBounds.first..widthBounds.second) {
                 //todo: fix right corner
-                if (x < 0 || y < 0 || x > gameMap.width || y > gameMap.height) {
+                if (x < 0 || y < 0 || x >= gameMap.width || y >= gameMap.height) {
                     map.append("&nbsp;")
                 } else {
                     if (x == gameMap.cursor.posX && y == gameMap.cursor.posY){
@@ -43,7 +43,7 @@ object Game: Thread() {
             }
             map.append("<br>")
         }
-        map.append("</tt></html")
+        map.append("</tt></html>")
         gameFrame.browser.engine.loadContent(map.toString())
     }
 }
