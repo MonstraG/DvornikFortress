@@ -1,46 +1,41 @@
+import javafx.application.Platform
+import javafx.scene.web.WebView
 import java.awt.BorderLayout
 import java.awt.Color
-import java.awt.Font
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
-import javax.swing.JTextPane
+import javafx.scene.Scene
+import javafx.embed.swing.JFXPanel
+import javafx.scene.input.KeyEvent
 
 class GameFrame: JFrame() {
-    val mapPane = MapPane()
-    val input = KeyListenerImpl()
+    lateinit var browser: WebView
+    private val browserPane = JFXPanel()
     init {
         title = "Dvornik Fortress"
-        val image = ImageIO.read(File("src/resources/dvornik_fortress.png"))
-        iconImage = image
+        iconImage = ImageIO.read(File("src/resources/dvornik_fortress.png"))
 
         defaultCloseOperation = EXIT_ON_CLOSE
         background = Color.BLACK
-        setSize(800, 400)
+        setSize(800, 430)
         setLocationRelativeTo(null)
         isVisible = true
 
-        contentPane.add(mapPane, BorderLayout.CENTER)
+        contentPane.add(browserPane, BorderLayout.CENTER)
 
-        addKeyListener(input)
+        Platform.runLater {
+            browser = WebView()
+            browserPane.scene = Scene(browser)
+            browser.setOnKeyPressed { e -> handleKeyPress(e) }
+        }
     }
-}
 
-class MapPane: JTextPane() {
-    init {
-        val font = Font(Font.MONOSPACED, Font.PLAIN, 12)
-        setFont(font)
-        background = Color.BLACK
-        foreground = Color.LIGHT_GRAY
-        isEnabled = false
-        isEditable = false
-        contentType = "text/html"
-    }
-}
+    private fun handleKeyPress(e: KeyEvent) {
+        val buttonCode = e.code.code
+        buttonMap[buttonCode]?.invoke()
 
-class HelpPane: JTextPane() {
-    init {
-//        Don't forget to change BorderLayout for MapPane
-//        contentPane.add(mapPane, BorderLayout.RIGHT)
+        println("${e.character} (${buttonCode}")
+        println("${gameMap.cursor.posX}, ${gameMap.cursor.posY}\n")
     }
 }

@@ -1,27 +1,27 @@
 val buttonMap = mapOf(
-    'q' to {q()},
-    '&' to {up_arrow()},
-    '(' to {down_arrow()},
-    '\'' to {right_arrow()},
-    '%' to {left_arrow()}
+    81 to {q()},
+    38 to {upArrow()},
+    40 to {downArrow()},
+    39 to {rightArrow()},
+    37 to {leftArrow()}
 )
 
 fun q() {
     gameRunning = false
 }
 
-fun up_arrow() {
-    gameMap.cursor.posY = (gameMap.cursor.posY - 1).coerceAtLeast(0)
+fun upArrow() {
+    gameMap.cursor.posY = (gameMap.cursor.posY - 1).coerceAtLeast(0).coerceAtMost(gameMap.height)
 }
 
-fun down_arrow() {
-    gameMap.cursor.posY = (gameMap.cursor.posY + 1).coerceAtMost(gameMap.cursor.height)
+fun downArrow() {
+    gameMap.cursor.posY = (gameMap.cursor.posY + 1).coerceAtLeast(0).coerceAtMost(gameMap.height)
 }
 
-fun right_arrow() {
-    gameMap.cursor.posX = (gameMap.cursor.posX + 1).coerceAtLeast(0)
+fun rightArrow() {
+    gameMap.cursor.posX = (gameMap.cursor.posX + 1).coerceAtLeast(0).coerceAtMost(gameMap.width)
 }
 
-fun left_arrow() {
-    gameMap.cursor.posX = (gameMap.cursor.posX - 1).coerceAtMost(gameMap.cursor.width)
+fun leftArrow() {
+    gameMap.cursor.posX = (gameMap.cursor.posX - 1).coerceAtLeast(0).coerceAtMost(gameMap.width)
 }

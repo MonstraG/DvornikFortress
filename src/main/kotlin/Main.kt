@@ -1,3 +1,4 @@
+import javafx.application.Platform
 import java.lang.StringBuilder
 
 var gameRunning = true
@@ -11,17 +12,10 @@ fun main() {
 object Game: Thread() {
     override fun run() {
         while (gameRunning) {
-            if (gameFrame.input.queue.isNotEmpty()) {
-                val buttonCode = gameFrame.input.queue.remove()
-                val button = buttonCode.toChar().toLowerCase()
-                val buttonCodeLower = button.toInt()
-                buttonMap[button]?.invoke()
-
-                println("$button ($buttonCode, lower: $buttonCodeLower)")
-                println("${gameMap.cursor.posX}, ${gameMap.cursor.posY}\n")
+            Platform.runLater {
+                drawMap()
             }
-            drawMap()
-            sleep(16)
+            sleep(40)
         }
         gameFrame.dispose()
     }
@@ -32,19 +26,24 @@ object Game: Thread() {
         val widthBounds = gameMap.getVisibleWidthBounds()
         val heightBounds = gameMap.getVisibleHeightBounds()
 
-        map.append("<tt>")
+        map.append("<html><tt>")
         for (y in heightBounds.first..heightBounds.second) {
             for (x in widthBounds.first..widthBounds.second) {
+                //todo: fix right corner
                 if (x < 0 || y < 0 || x > gameMap.width || y > gameMap.height) {
                     map.append("&nbsp;")
                 } else {
-                    map.append(gameMap.map[x][y])
+                    if (x == gameMap.cursor.posX && y == gameMap.cursor.posY){
+                        map.append("<span style = \"color:red\" >${gameMap.map[x][y]}</span>")
+                    }
+                    else {
+                        map.append(gameMap.map[x][y])
+                    }
                 }
             }
             map.append("<br>")
         }
-        map.append("</tt>")
-
-        gameFrame.mapPane.text = map.toString()
+        map.append("</tt></html")
+        gameFrame.browser.engine.loadContent(map.toString())
     }
 }
