@@ -18,7 +18,7 @@ class GameFrame: JFrame() {
 
         defaultCloseOperation = EXIT_ON_CLOSE
         background = Color.BLACK
-        setSize(800, 430)
+        setSize(700, 450)
         setLocationRelativeTo(null)
         isVisible = true
 
@@ -36,6 +36,6 @@ class GameFrame: JFrame() {
         buttonMap[buttonCode]?.invoke()
 
         println("button pressed - $buttonCode")
-        println("pos - (${gameMap.cursor.posX}, ${gameMap.cursor.posY})\n")
+        println("pos - (${gameMap.cursor.posX}, ${gameMap.cursor.posY}, ${gameMap.cursor.posZ})\n")
     }
 }

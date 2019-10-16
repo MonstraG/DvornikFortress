@@ -1,31 +1,24 @@
 import kotlin.random.Random
-import kotlin.reflect.typeOf
-
-var Help = arrayOf(
-    "\tСправка:",
-    "\t",
-    "\tq: выход из игры",
-    "\tu: подняться на один уровень",
-    "\td: опуститься на один уровень",
-    "\tУправление игроком осуществляется",
-    "\tчерез стрелки"
-)
+const val DIRT_HEIGHT = 48
 
 enum class Material {
     NONE,
     DIRT,
     STONE,
+    WOOD,
     GOLD,
-    IRON
+    IRON,
+    BEDROCK
 }
 
-//map to char instead of string to ensure that every material has 1-char representation.
 val MaterialToCharMap = mapOf(
-    Material.NONE to ' ',
+    Material.NONE to "&nbsp;",
     Material.DIRT to '\'',
     Material.STONE to '#',
-    Material.GOLD to '$',
-    Material.IRON to 'o'
+    Material.WOOD to 'O',
+    Material.GOLD to 'G',
+    Material.IRON to '0',
+    Material.BEDROCK to '░'
 )
 
 class Block(val material: Material = Material.NONE) {
@@ -35,32 +28,29 @@ class Block(val material: Material = Material.NONE) {
     }
 }
 
-class Map(val height: Int = 256, val width: Int = 256, val depth: Int = 64) {
-    val cursor = Cursor()
-    var map = Array(depth){z->Array(height) {Array(width) { Block(gen(z)) }}}
+private val random = Random
 
-    fun gen(z:Int): Material {
-        var material: Material //если z > 17, то все воздух (None) 17 - уровень земли. все, что ниже 17 - это камень/золото/железо
-        if (z > 17){
-            material = Material.NONE
-        }
-        else{
-        if (z == 17)
-            material = Material.DIRT
-        else{ //ВОТ ТУТА НАЧИНАЕТСЯ ВЕРОЯТНОСТНОЕ РАСПРЕДЕЛЕНИЕ
-            val random = Random
-            val percent = random.nextFloat()
-            if (percent < 0.1)
-                material = Material.GOLD
-            else{
-                if (percent < 0.2)
-                    material = Material.IRON
-                else
-                    material = Material.STONE
+class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
+    val cursor = Cursor()
+    val map = Array(depth) { z-> Array(height) {Array(width) { Block(generateMap(z)) }}}
+
+    private fun generateMap(z: Int): Material {
+        return when {
+            z > DIRT_HEIGHT + 1 -> Material.NONE
+            z == DIRT_HEIGHT + 1 -> {
+                return if (random.nextFloat() < 0.05) Material.WOOD else Material.NONE
+            }
+            z == DIRT_HEIGHT -> Material.DIRT
+            z == 0 -> Material.BEDROCK
+            else -> {
+                val rnd = random.nextFloat()
+                when {
+                    rnd < 0.02 -> Material.GOLD
+                    rnd < 0.05 -> Material.IRON
+                    else -> Material.STONE
+                }
             }
         }
-        }
-        return material
     }
 
     fun getVisibleWidthBounds(): Pair<Int, Int> {
@@ -80,11 +70,11 @@ class Map(val height: Int = 256, val width: Int = 256, val depth: Int = 64) {
 
 class Cursor {
     //current position of the screen center
-    var posX = 0
-    var posY = 0
-    var posZ = 17; //will be added later
+    var posX = 128
+    var posY = 128
+    var posZ = DIRT_HEIGHT + 1
 
-    //we draw %width blocks to the left of the cursor, and same amount to the right
+    //we draw $width$ blocks to the left of the cursor, and same amount to the right
     var width = 30
     var height = 12
 }

@@ -1,38 +1,31 @@
+val Help = arrayOf(
+    "\tq: exit",
+    "\tu: rise up",
+    "\td: go down",
+    "\tarrows: move around"
+)
+
 val buttonMap = mapOf(
     81 to {q()},
     38 to {upArrow()},
     40 to {downArrow()},
     39 to {rightArrow()},
     37 to {leftArrow()},
-    //32 to {changeLevel()},
-    85 to {levelUp()},
-    68 to {levelDown()}
+    85 to {u()},
+    68 to {d()}
 )
 
 fun q() {
     gameRunning = false
 }
 
-fun levelUp(){
-    gameMap.cursor.posZ = (gameMap.cursor.posZ + 1) % 64
+fun u() {
+    gameMap.cursor.posZ = bound(gameMap.cursor.posZ + 1, 64)
 }
 
-fun levelDown(){
-    gameMap.cursor.posZ = (gameMap.cursor.posZ - 1)
+fun d() {
+    gameMap.cursor.posZ =  bound(gameMap.cursor.posZ - 1, 64)
 }
-/*
-
-fun changeLevel(){
-    if (gameMap.material == Material.DIRT) {
-        gameMap.map = Array(256) { Array(256) { Block(Material.STONE) } }
-        gameMap.material = Material.STONE
-    }
-    else {
-        gameMap.map = Array(256) { Array(256) { Block(Material.DIRT) } }
-        gameMap.material = Material.DIRT
-    }
-}
-*/
 
 fun upArrow() {
     gameMap.cursor.posY = bound(gameMap.cursor.posY - 1, gameMap.height)
