@@ -34,12 +34,16 @@ object Game: Thread() {
                     map.append("&nbsp;")
                 } else {
                     if (x == gameMap.cursor.posX && y == gameMap.cursor.posY){
-                        map.append("<span style=\"color:red\" >${gameMap.map[x][y]}</span>")
+                        map.append("<span style=\"color:red\" >${gameMap.map[gameMap.cursor.posZ][x][y]}</span>")
                     }
                     else {
-                        map.append(gameMap.map[x][y])
+                        map.append(gameMap.map[gameMap.cursor.posZ][x][y])
                     }
                 }
+            }
+            val lineIndex = y - heightBounds.first
+            if (lineIndex < Help.size){
+                map.append(Help[lineIndex])
             }
             map.append("<br>")
         }
