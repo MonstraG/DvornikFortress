@@ -40,10 +40,14 @@ class Map(val height: Int = 256, val width: Int = 256, val depth: Int = 64) {
     var map = Array(depth){z->Array(height) {Array(width) { Block(gen(z)) }}}
 
     fun gen(z:Int): Material {
-        var material = Material.NONE
+        var material: Material //если z > 17, то все воздух (None) 17 - уровень земли. все, что ниже 17 - это камень/золото/железо
+        if (z > 17){
+            material = Material.NONE
+        }
+        else{
         if (z == 17)
             material = Material.DIRT
-        else{
+        else{ //ВОТ ТУТА НАЧИНАЕТСЯ ВЕРОЯТНОСТНОЕ РАСПРЕДЕЛЕНИЕ
             val random = Random
             val percent = random.nextFloat()
             if (percent < 0.1)
@@ -54,6 +58,7 @@ class Map(val height: Int = 256, val width: Int = 256, val depth: Int = 64) {
                 else
                     material = Material.STONE
             }
+        }
         }
         return material
     }
