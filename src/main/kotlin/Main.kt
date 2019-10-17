@@ -53,11 +53,26 @@ object Game: Thread() {
 
             map.append("<br>")
         }
+        //Current Block Name
+        fun depthBlock(VisibleBlock: Material): String{
+            val CurrentMaterialMap = mapOf(
+                Material.DIRT to "Dirt",
+                Material.IRON to "Iron",
+                Material.GOLD to "Gold",
+                Material.STONE to "Stone",
+                Material.WOOD to "Wood",
+                Material.BEDROCK to "Badrock",
+                Material.NONE to "Air")
+            if (gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material == Material.NONE) {
+                return gameMap.map[gameMap.cursor.posZ - 1][gameMap.cursor.posX][gameMap.cursor.posY].material.toString()
+            }
+                else return gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material.toString()
+        }
         map.append("position: (${gameMap.cursor.posX}, ${gameMap.cursor.posY}, ${gameMap.cursor.posZ})")
+        map.append(" Current block is: ${depthBlock(gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material)} ")
         map.append("</tt></html>")
         gameFrame.browser.engine.loadContent(map.toString())
     }
-
     fun drawBlock(map: StringBuilder, x: Int, y: Int, z: Int, color: String?) {
         if (color != null) {
             map.append("<span style=\"color:" + color + "\" >${gameMap.map[z][x][y]}</span>")
