@@ -20,27 +20,27 @@ fun q() {
 }
 
 fun u() {
-    gameMap.cursor.posZ = bound(gameMap.cursor.posZ + 1, 64)
+    gameMap.z = bound(gameMap.z + 1, 64)
 }
 
 fun d() {
-    gameMap.cursor.posZ =  bound(gameMap.cursor.posZ - 1, 64)
+    gameMap.z =  bound(gameMap.z - 1, 64)
 }
 
 fun upArrow() {
-    gameMap.cursor.posY = bound(gameMap.cursor.posY - 1, gameMap.height)
+    gameMap.y = bound(gameMap.y - 1, gameMap.height)
 }
 
 fun downArrow() {
-    gameMap.cursor.posY = bound(gameMap.cursor.posY + 1, gameMap.height)
+    gameMap.y = bound(gameMap.y + 1, gameMap.height)
 }
 
 fun rightArrow() {
-    gameMap.cursor.posX = bound(gameMap.cursor.posX + 1, gameMap.width)
+    gameMap.x = bound(gameMap.x + 1, gameMap.width)
 }
 
 fun leftArrow() {
-    gameMap.cursor.posX = bound(gameMap.cursor.posX - 1, gameMap.width)
+    gameMap.x = bound(gameMap.x - 1, gameMap.width)
 }
 
 fun bound(value: Int, max: Int): Int {

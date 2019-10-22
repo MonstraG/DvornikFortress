@@ -36,6 +36,6 @@ class GameFrame: JFrame() {
         buttonMap[buttonCode]?.invoke()
 
         println("button pressed - $buttonCode")
-        println("pos - (${gameMap.cursor.posX}, ${gameMap.cursor.posY}, ${gameMap.cursor.posZ})\n")
+        println("pos - (${gameMap.x}, ${gameMap.y}, ${gameMap.z})\n")
     }
 }

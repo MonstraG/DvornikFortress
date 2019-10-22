@@ -33,15 +33,10 @@ object Game: Thread() {
                     map.append("&nbsp;")
                 } else {
                     var color : String? = null
-                    var z = gameMap.cursor.posZ
-                    if (x == gameMap.cursor.posX && y == gameMap.cursor.posY) {
+                    if (gameMap.isOnCursor(x, y)) {
                         color = "red"
                     }
-                    if (gameMap.map[gameMap.cursor.posZ][x][y].material == Material.NONE && gameMap.cursor.posZ < 63) {
-                        //draw next block below, if this block is empty (happens only to the depth of 1)
-                        z -= 1
-                    }
-                    drawBlock(map, x, y, z, color)
+                    drawBlock(map, x, y, gameMap.z, color)
                 }
             }
 
@@ -53,31 +48,17 @@ object Game: Thread() {
 
             map.append("<br>")
         }
-        //Current Block Name
-        fun depthBlock(VisibleBlock: Material): String{
-            val CurrentMaterialMap = mapOf(
-                Material.DIRT to "Dirt",
-                Material.IRON to "Iron",
-                Material.GOLD to "Gold",
-                Material.STONE to "Stone",
-                Material.WOOD to "Wood",
-                Material.BEDROCK to "Badrock",
-                Material.NONE to "Air")
-            if (gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material == Material.NONE) {
-                return gameMap.map[gameMap.cursor.posZ - 1][gameMap.cursor.posX][gameMap.cursor.posY].material.toString()
-            }
-                else return gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material.toString()
-        }
-        map.append("position: (${gameMap.cursor.posX}, ${gameMap.cursor.posY}, ${gameMap.cursor.posZ})")
-        map.append(" Current block is: ${depthBlock(gameMap.map[gameMap.cursor.posZ][gameMap.cursor.posX][gameMap.cursor.posY].material)} ")
+        map.append("position: [${gameMap.x}, ${gameMap.y}, ${gameMap.z}]")
+        map.append(" ${MaterialLocale[gameMap.getBlock(gameMap.x, gameMap.y, gameMap.z).material]}")
         map.append("</tt></html>")
         gameFrame.browser.engine.loadContent(map.toString())
     }
-    fun drawBlock(map: StringBuilder, x: Int, y: Int, z: Int, color: String?) {
+
+    private fun drawBlock(map: StringBuilder, x: Int, y: Int, z: Int, color: String?) {
         if (color != null) {
-            map.append("<span style=\"color:" + color + "\" >${gameMap.map[z][x][y]}</span>")
+            map.append("<span style=\"color:" + color + "\" >${gameMap.getBlock(x, y, z)}</span>")
         } else {
-            map.append(gameMap.map[z][x][y])
+            map.append(gameMap.getBlock(x, y, z))
         }
     }
 }

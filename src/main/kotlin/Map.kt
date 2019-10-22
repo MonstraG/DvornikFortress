@@ -11,6 +11,15 @@ enum class Material {
     BEDROCK
 }
 
+val MaterialLocale = mapOf(
+    Material.DIRT to "Dirt",
+    Material.IRON to "Iron",
+    Material.GOLD to "Gold",
+    Material.STONE to "Stone",
+    Material.WOOD to "Wood",
+    Material.BEDROCK to "Bedrock",
+    Material.NONE to "Air")
+
 val MaterialToCharMap = mapOf(
     Material.NONE to "&nbsp;",
     Material.DIRT to '\'',
@@ -31,7 +40,8 @@ class Block(val material: Material = Material.NONE) {
 private val random = Random
 
 class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
-    val cursor = Cursor()
+    private val cursor = Cursor()
+    //todo: fix map[z][x][y] -> map[x][y][z]
     val map = Array(depth) { z-> Array(height) {Array(width) { Block(generateMap(z)) }}}
 
     private fun generateMap(z: Int): Material {
@@ -53,18 +63,31 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
         }
     }
 
+    var x = cursor.posX
+    var y = cursor.posY
+    var z = cursor.posZ
+
     fun getVisibleWidthBounds(): Pair<Int, Int> {
-        return Pair(
-            cursor.posX - cursor.width,
-            cursor.posX + cursor.width
-        )
+        return Pair(x - cursor.width, x + cursor.width)
     }
 
     fun getVisibleHeightBounds(): Pair<Int, Int> {
-        return Pair(
-            cursor.posY - cursor.height,
-            cursor.posY + cursor.height
-        )
+        return Pair(y - cursor.height, y + cursor.height)
+    }
+
+    fun isOnCursor(x: Int, y: Int): Boolean {
+        return this.x == x && this.y == y
+    }
+
+    fun isEmpty(x: Int, y: Int): Boolean {
+        return map[this.z][x][y].material == Material.NONE
+    }
+
+    /**
+     * If block at the coords is empty, returns block below.
+     */
+    fun getBlock(x: Int, y: Int, z: Int): Block {
+        return if (isEmpty(x, y) && z > 0) map[z - 1][x][y] else map[z][x][y]
     }
 }
 
