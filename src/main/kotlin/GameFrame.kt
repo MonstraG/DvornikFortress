@@ -1,13 +1,14 @@
+import input.buttonMap
 import javafx.application.Platform
+import javafx.embed.swing.JFXPanel
+import javafx.scene.Scene
+import javafx.scene.input.KeyEvent
 import javafx.scene.web.WebView
 import java.awt.BorderLayout
 import java.awt.Color
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
-import javafx.scene.Scene
-import javafx.embed.swing.JFXPanel
-import javafx.scene.input.KeyEvent
 
 class GameFrame: JFrame() {
     lateinit var browser: WebView
@@ -36,6 +37,5 @@ class GameFrame: JFrame() {
         buttonMap[buttonCode]?.invoke()
 
         println("button pressed - $buttonCode")
-        println("pos - (${gameMap.x}, ${gameMap.y}, ${gameMap.z})\n")
     }
 }
