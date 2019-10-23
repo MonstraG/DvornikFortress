@@ -3,7 +3,10 @@ package map.objects
 //todo: create class BlockType, and fill come kind of blockType list with them like so:
 // BlockType(Id, map.objects.Material, MapChar, Locale)
 
-
+//class BlockType(Id: Int, TypeOfMaterial:Material, MapChar: Char, Locale:String){
+//
+//}
+//class B
 enum class Material {
     NONE,
     DIRT,

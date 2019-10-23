@@ -11,7 +11,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
     //todo: fix map[input.z][x][y] -> map[x][y][input.z]
     private val random = Random
 
-    private val map = Array(depth) { z-> Array(height) {Array(width) { Block(generateMap(z)) }}}
+    private val map = Array(height) {  Array(width) {Array(depth) { z-> Block(generateMap(z)) }}}
 
     var x = posX
     var y = posY
@@ -49,14 +49,14 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
     }
 
     private fun isEmpty(x: Int, y: Int): Boolean {
-        return map[z][x][y].material == Material.NONE
+        return map[x][y][z].material == Material.NONE
     }
 
     /**
      * If block at the coordinates is empty, returns block below.
      */
     private fun getBlock(x: Int, y: Int, z: Int): Block {
-        return if (isEmpty(x, y) && z > 0) map[z - 1][x][y] else map[z][x][y]
+        return if (isEmpty(x, y) && z > 0) map[x][y][z - 1] else map[x][y][z]
     }
 
     override fun toString(): String {
