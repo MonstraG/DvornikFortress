@@ -1,8 +1,8 @@
 package map.objects
 
-class Block(val material: Material = Material.NONE) {
+class Block(val blockType: BlockType) {
 
     override fun toString(): String {
-        return MaterialToCharMap[this.material].toString()
+        return blockType.mapChar
     }
 }

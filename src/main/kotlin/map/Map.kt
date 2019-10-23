@@ -3,8 +3,7 @@ package map
 import digMode
 import input.Help
 import map.objects.Block
-import map.objects.Material
-import map.objects.MaterialLocale
+import map.objects.BlockType
 import kotlin.random.Random
 
 class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
@@ -17,20 +16,20 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
     var y = posY
     var z = posZ
 
-    private fun generateMap(z: Int): Material {
+    private fun generateMap(z: Int): BlockType {
         return when {
-            z > DIRT_HEIGHT + 1 -> Material.NONE
+            z > DIRT_HEIGHT + 1 -> BlockType.NONE
             z == DIRT_HEIGHT + 1 -> {
-                return if (random.nextFloat() < 0.05) Material.WOOD else Material.NONE
+                return if (random.nextFloat() < 0.05) BlockType.WOOD else BlockType.NONE
             }
-            z == DIRT_HEIGHT -> Material.DIRT
-            z == 0 -> Material.BEDROCK
+            z == DIRT_HEIGHT -> BlockType.DIRT
+            z == 0 -> BlockType.BEDROCK
             else -> {
                 val rnd = random.nextFloat()
                 when {
-                    rnd < 0.02 -> Material.GOLD
-                    rnd < 0.05 -> Material.IRON
-                    else -> Material.STONE
+                    rnd < 0.02 -> BlockType.GOLD
+                    rnd < 0.05 -> BlockType.IRON
+                    else -> BlockType.STONE
                 }
             }
         }
@@ -49,7 +48,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
     }
 
     private fun isEmpty(x: Int, y: Int): Boolean {
-        return map[x][y][z].material == Material.NONE
+        return map[x][y][z].blockType == BlockType.NONE
     }
 
     /**
@@ -90,7 +89,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
             map.append("<br>")
         }
         map.append("position: [${x}, ${y}, ${z}]")
-        map.append(" ${MaterialLocale[getBlock(x, y, z).material]}")
+        map.append(" ${getBlock(x, y, z).blockType.locale}")
         map.append("</tt></html>")
         return map.toString()
     }
