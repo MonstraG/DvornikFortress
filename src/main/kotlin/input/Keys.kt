@@ -1,6 +1,7 @@
 package input
 
-import digMode
+import gameState
+import map.OrderType
 
 object Keys {
     fun esq() {
@@ -8,15 +9,11 @@ object Keys {
     }
 
     fun q() {
-        if (!digMode) {
-            riseUp()
-        }
+        riseUp()
     }
 
     fun z() {
-        if (!digMode) {
-            goDown()
-        }
+        goDown()
     }
 
     fun upArrow() {
@@ -36,14 +33,18 @@ object Keys {
     }
 
     fun d() {
-        if (!digMode) {
+        if (gameState.currentMode != OrderType.DIG) {
             enterDigMode()
         }
     }
 
+    fun c() {
+        cancelMode()
+    }
+
     fun enter() {
-        if (digMode) {
-            finalizeDigOrder()
+        if (gameState.currentMode == OrderType.DIG) {
+            addDigOrder()
         }
     }
 }

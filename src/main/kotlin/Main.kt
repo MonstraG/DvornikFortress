@@ -1,13 +1,10 @@
 import javafx.application.Platform
 import map.Map
 
-//todo: move out to gameState object, that is initialized in run()
-var gameRunning = true
-var digMode = false
-var digModeStartPos = Triple(0, 0, 0)
 
 val gameMap = Map()
 val gameFrame = GameFrame()
+val gameState = GameState()
 
 fun main() {
     Game.start()
@@ -15,7 +12,7 @@ fun main() {
 
 object Game: Thread() {
     override fun run() {
-        while (gameRunning) {
+        while (gameState.gameRunning) {
             Platform.runLater {  gameFrame.browser.engine.loadContent(gameMap.toString()) }
             sleep(40) //25 fps
         }

@@ -1,6 +1,6 @@
 package map
 
-import digMode
+import gameState
 import input.Help
 import map.objects.Block
 import map.objects.BlockType
@@ -71,12 +71,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
                     //for positions outside map, draw empty space
                     map.append("&nbsp;")
                 } else {
-                    var color : String? = null
-                    if (isOnCursor(x, y)) {
-                        //todo color fill rectangle from digModeStart to cursor pose.
-                        color = getSelectionColor()
-                    }
-                    appendBlock(map, x, y, z, color)
+                    appendBlock(map, x, y, z)
                 }
             }
 
@@ -88,28 +83,20 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
 
             map.append("<br>")
         }
-        map.append("position: [${x}, ${y}, ${z}]")
+        map.append("position: [$x, $y, $z]")
         map.append(" ${getBlock(x, y, z).blockType.locale}")
         map.append("</tt></html>")
         return map.toString()
     }
 
-    private fun appendBlock(map: StringBuilder, x: Int, y: Int, z: Int, color: String?) {
-        if (color != null) {
-            map.append("<span style=\"color:" + color + "\" >${getBlock(x, y, z)}</span>")
+    private fun appendBlock(map: StringBuilder, x: Int, y: Int, z: Int) {
+        val color = if (isOnCursor(x, y)) {
+            gameState.currentMode.hoverColor
         } else {
-            map.append(getBlock(x, y, z))
+            val blockOrder = gameState.getOrderForBlock(x, y, z)
+            blockOrder?.color ?: OrderType.NONE.color
         }
-    }
-
-    private fun getSelectionColor(): String? {
-        if (digMode) {
-            return "blue"
-        }
-//        if (chopMode) {
-//            return "green"
-//        }
-        return "red"
+        map.append("<span style=\"color:" + color + "\" >${getBlock(x, y, z)}</span>")
     }
 
     companion object Cursor {

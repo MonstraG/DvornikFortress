@@ -1,13 +1,13 @@
 package input
 
 import bound
-import digMode
-import digModeStartPos
 import gameMap
-import gameRunning
+import gameState
+import map.Order
+import map.OrderType
 
 fun exit() {
-    gameRunning = false
+    gameState.gameRunning = false
 }
 
 fun riseUp() {
@@ -35,11 +35,14 @@ fun moveRight() {
 }
 
 fun enterDigMode() {
-    digMode = true
-    digModeStartPos = Triple(gameMap.x, gameMap.y, gameMap.z)
+    gameState.currentMode = OrderType.DIG
 }
 
-fun finalizeDigOrder() {
-    digMode = false
-    //todo
+fun cancelMode() {
+    gameState.currentMode = OrderType.NONE
+}
+
+fun addDigOrder() {
+    //later     gameState.digMode = false
+    gameState.orders.add(Order(OrderType.DIG, map.Map.posX, map.Map.posY, map.Map.posZ))
 }

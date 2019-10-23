@@ -8,7 +8,6 @@ val Help = arrayOf(
     "\tarrows: move around",
     "",
     "\td: dig mode",
-    "\tc: chop mode", //todo: chopping mechanic
     "\tenter: apply order"
 )
 //todo add color to key letters.
@@ -22,5 +21,6 @@ val buttonMap = mapOf(
     81 to { Keys.q() },
     90 to { Keys.z() },
     68 to { Keys.d() },
-    10 to { Keys.enter() }
+    10 to { Keys.enter() },
+    67 to { Keys.c() }
 )
