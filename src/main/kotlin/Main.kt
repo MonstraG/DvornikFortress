@@ -1,6 +1,5 @@
 import javafx.application.Platform
-import map.Map
-
+import game.map.Map
 
 val gameMap = Map()
 val gameFrame = GameFrame()

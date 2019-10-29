@@ -1,16 +1,14 @@
-package map
+package game.map
 
-import gameState
-import input.Help
-import map.objects.Block
-import map.objects.BlockType
+import game.objects.Block
+import game.objects.BlockType
 import kotlin.random.Random
 
 class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
-    //todo: fix map[input.z][x][y] -> map[x][y][input.z]
     private val random = Random
+    private val serializer = MapSerializer()
 
-    private val map = Array(height) {  Array(width) {Array(depth) { z-> Block(generateMap(z)) }}}
+    private val map = Array(height) { Array(width) { Array(depth) { z-> Block(generateMap(z)) }}}
 
     var x = posX
     var y = posY
@@ -24,6 +22,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
             }
             z == DIRT_HEIGHT -> BlockType.DIRT
             z == 0 -> BlockType.BEDROCK
+            // DIRT_HEIGHT > z > 0
             else -> {
                 val rnd = random.nextFloat()
                 when {
@@ -43,7 +42,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
         return Pair(y - Cursor.height, y + Cursor.height)
     }
 
-    private fun isOnCursor(x: Int, y: Int): Boolean {
+    fun isOnCursor(x: Int, y: Int): Boolean {
         return this.x == x && this.y == y
     }
 
@@ -54,49 +53,25 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
     /**
      * If block at the coordinates is empty, returns block below.
      */
-    private fun getBlock(x: Int, y: Int, z: Int): Block {
+    fun getBlock(x: Int, y: Int, z: Int): Block {
         return if (isEmpty(x, y) && z > 0) map[x][y][z - 1] else map[x][y][z]
     }
 
     override fun toString(): String {
-        val map = StringBuilder()
-
         val widthBounds = getVisibleWidthBounds()
         val heightBounds = getVisibleHeightBounds()
-
-        map.append("<html style=\"background: black; color:white\"><tt>")
         for (y in heightBounds.first..heightBounds.second) {
             for (x in widthBounds.first..widthBounds.second) {
                 if (x < 0 || y < 0 || x >= width || y >= height) {
                     //for positions outside map, draw empty space
-                    map.append("&nbsp;")
+                    serializer.appendEmpty()
                 } else {
-                    appendBlock(map, x, y, z)
+                    serializer.appendBlock(x, y, z)
                 }
             }
-
-            //draw help
-            val lineIndex = y - heightBounds.first
-            if (lineIndex < Help.size){
-                map.append(Help[lineIndex])
-            }
-
-            map.append("<br>")
+            serializer.appendHelp(y - heightBounds.first).appendNewLine()
         }
-        map.append("position: [$x, $y, $z]")
-        map.append(" ${getBlock(x, y, z).blockType.locale}")
-        map.append("</tt></html>")
-        return map.toString()
-    }
-
-    private fun appendBlock(map: StringBuilder, x: Int, y: Int, z: Int) {
-        val color = if (isOnCursor(x, y)) {
-            gameState.currentMode.hoverColor
-        } else {
-            val blockOrder = gameState.getOrderForBlock(x, y, z)
-            blockOrder?.color ?: OrderType.NONE.color
-        }
-        map.append("<span style=\"color:" + color + "\" >${getBlock(x, y, z)}</span>")
+        return serializer.appendCursorInfo(x, y, z).finalize()
     }
 
     companion object Cursor {

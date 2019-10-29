@@ -1,4 +1,4 @@
-package map
+package game.orders
 
 enum class OrderType(val hoverColor: String,val color: String) {
     NONE("red", "white"),

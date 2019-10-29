@@ -1,5 +1,5 @@
-import map.Order
-import map.OrderType
+import game.orders.Order
+import game.orders.OrderType
 
 class GameState {
     var gameRunning = true

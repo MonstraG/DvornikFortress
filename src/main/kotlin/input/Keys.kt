@@ -1,7 +1,7 @@
 package input
 
 import gameState
-import map.OrderType
+import game.orders.OrderType
 
 object Keys {
     fun esq() {

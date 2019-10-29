@@ -1,4 +1,4 @@
-package map.objects
+package game.objects
 
 enum class BlockType(val mapChar: String, val locale: String) {
     NONE("&nbsp;", "Air"),

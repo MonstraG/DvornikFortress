@@ -1,4 +1,4 @@
-package map.objects
+package game.objects
 
 class Block(val blockType: BlockType) {
 

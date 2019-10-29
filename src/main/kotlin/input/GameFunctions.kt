@@ -3,8 +3,9 @@ package input
 import bound
 import gameMap
 import gameState
-import map.Order
-import map.OrderType
+import game.map.Map
+import game.orders.Order
+import game.orders.OrderType
 
 fun exit() {
     gameState.gameRunning = false
@@ -43,6 +44,5 @@ fun cancelMode() {
 }
 
 fun addDigOrder() {
-    //later     gameState.digMode = false
-    gameState.orders.add(Order(OrderType.DIG, map.Map.posX, map.Map.posY, map.Map.posZ))
+    gameState.orders.add(Order(OrderType.DIG, Map.posX, Map.posY, Map.posZ))
 }
