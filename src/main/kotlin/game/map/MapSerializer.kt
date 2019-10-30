@@ -39,7 +39,7 @@ class MapSerializer {
 
     fun appendCursorInfo(x: Int, y: Int, z: Int): MapSerializer {
         mapStringBuilder.append("position: [$x, $y, $z]")
-        mapStringBuilder.append(" ${gameMap.getBlock(x, y, z).blockType.locale}")
+        mapStringBuilder.append(" ${gameMap.getHoverInfo(x, y, z)}")
         return this
     }
 

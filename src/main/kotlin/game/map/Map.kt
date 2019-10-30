@@ -46,15 +46,26 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64) {
         return this.x == x && this.y == y
     }
 
-    private fun isEmpty(x: Int, y: Int): Boolean {
+    private fun isAir(x: Int, y: Int, z: Int): Boolean {
         return map[x][y][z].blockType == BlockType.NONE
+    }
+
+    private fun isEmpty(x: Int, y: Int, z: Int): Boolean {
+        return map[x][y][z].occupant == null
     }
 
     /**
      * If block at the coordinates is empty, returns block below.
      */
     fun getBlock(x: Int, y: Int, z: Int): Block {
-        return if (isEmpty(x, y) && z > 0) map[x][y][z - 1] else map[x][y][z]
+        return if (isAir(x, y, z) && z > 0) map[x][y][z - 1] else map[x][y][z]
+    }
+
+    fun getHoverInfo(x: Int, y: Int, z: Int): String {
+        return if (!isEmpty(x, y, z)) //has dwarfs
+            map[x][y][z].occupant.toString()
+        else
+            getBlock(x, y, z).blockType.locale
     }
 
     override fun toString(): String {

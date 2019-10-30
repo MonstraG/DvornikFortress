@@ -33,7 +33,7 @@ class GameFrame: JFrame() {
     }
 
     private fun handleKeyPress(e: KeyEvent) {
-        val buttonCode = e.code.code
+        val buttonCode = e.code.impl_getCode()
         buttonMap[buttonCode]?.invoke()
 
         println("button pressed - $buttonCode")
