@@ -1,4 +1,3 @@
-import input.buttonMap
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
@@ -9,6 +8,8 @@ import java.awt.Color
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.JFrame
+
+import input.buttonMap
 
 class GameFrame: JFrame() {
     lateinit var browser: WebView
@@ -33,9 +34,9 @@ class GameFrame: JFrame() {
     }
 
     private fun handleKeyPress(e: KeyEvent) {
-        val buttonCode = e.code.impl_getCode()
-        buttonMap[buttonCode]?.invoke()
+        val buttonName = e.code.getName()
+        buttonMap[buttonName]?.invoke()
 
-        println("button pressed - $buttonCode")
+        println("button pressed - $buttonName")
     }
 }

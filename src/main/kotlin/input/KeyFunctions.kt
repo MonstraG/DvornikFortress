@@ -13,14 +13,14 @@ val Help = arrayOf(
 //todo add color to key letters.
 
 val buttonMap = mapOf(
-    27 to { Keys.esq() },
-    38 to { Keys.upArrow() },
-    40 to { Keys.downArrow() },
-    39 to { Keys.rightArrow() },
-    37 to { Keys.leftArrow() },
-    81 to { Keys.q() },
-    90 to { Keys.z() },
-    68 to { Keys.d() },
-    10 to { Keys.enter() },
-    67 to { Keys.c() }
+    "Esq" to { Keys.esq() },
+    "Up" to { Keys.upArrow() },
+    "Down" to { Keys.downArrow() },
+    "Right" to { Keys.rightArrow() },
+    "Left" to { Keys.leftArrow() },
+    "Q" to { Keys.q() },
+    "Z" to { Keys.z() },
+    "D" to { Keys.d() },
+    "Enter" to { Keys.enter() },
+    "C" to { Keys.c() }
 )
