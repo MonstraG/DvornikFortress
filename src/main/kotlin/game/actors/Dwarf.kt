@@ -1,11 +1,7 @@
 package game.actors
 
 
-//todo place dwarfs
-class Dwarf(var x: Int, var y: Int, var z: Int) {
+class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     val DWARF_SPEED = 5
-
-    override fun toString(): String {
-        return "@"
-    }
+    val mapChar = "@"
 }

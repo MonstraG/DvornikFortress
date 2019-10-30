@@ -36,10 +36,6 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return map[x][y][z].blockType == BlockType.NONE
     }
 
-    private fun isEmpty(x: Int, y: Int, z: Int): Boolean {
-        return map[x][y][z].occupant == null
-    }
-
     /**
      * If block at the coordinates is empty, returns block below.
      */
@@ -47,9 +43,18 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return if (isAir(x, y, z) && z > 0) map[x][y][z - 1] else map[x][y][z]
     }
 
-    fun getHoverInfo(x: Int, y: Int, z: Int): String {
-        return if (!isEmpty(x, y, z)) //has dwarfs
-            map[x][y][z].occupant.toString()
+    //todo: simplify with next one
+    //todo: ask why need !!
+    fun getOccupantOrBlockChar(x: Int, y: Int, z: Int): String {
+        return if (map[x][y][z].occupant != null) //has dwarfs
+            map[x][y][z].occupant!!.mapChar
+        else
+            getBlock(x, y, z).blockType.mapChar
+    }
+
+    fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int): String {
+        return if (map[x][y][z].occupant != null) //has dwarfs
+            map[x][y][z].occupant!!.name
         else
             getBlock(x, y, z).blockType.locale
     }

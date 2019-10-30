@@ -26,7 +26,7 @@ class MapSerializer {
             //get color of order, if null then default color.
             gameState.getOrderForBlock(x, y, z)?.color ?: OrderType.NONE.color
         }
-        mapStringBuilder.append("<span style=\"color:" + color + "\" >${gameMap.getBlock(x, y, z)}</span>")
+        mapStringBuilder.append("<span style=\"color:" + color + "\" >${gameMap.getOccupantOrBlockChar(x, y, z)}</span>")
         return this
     }
 
@@ -39,7 +39,7 @@ class MapSerializer {
 
     fun appendCursorInfo(x: Int, y: Int, z: Int): MapSerializer {
         mapStringBuilder.append("position: [$x, $y, $z]")
-        mapStringBuilder.append(" ${gameMap.getHoverInfo(x, y, z)}")
+        mapStringBuilder.append(" ${gameMap.getOccupantOrBlockLocale(x, y, z)}")
         return this
     }
 
