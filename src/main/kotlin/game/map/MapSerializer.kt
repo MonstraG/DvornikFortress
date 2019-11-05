@@ -39,7 +39,8 @@ class MapSerializer {
 
     fun appendCursorInfo(x: Int, y: Int, z: Int): MapSerializer {
         mapStringBuilder.append("position: [$x, $y, $z]")
-        mapStringBuilder.append(" ${gameMap.getOccupantOrBlockLocale(x, y, z)}")
+        mapStringBuilder.append("&emsp;&emsp;${gameMap.getOccupantOrBlockLocale(x, y, z)}")
+        mapStringBuilder.append("&emsp;&emsp;time: ${gameState.tick}")
         return this
     }
 

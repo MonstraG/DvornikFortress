@@ -3,6 +3,7 @@ package game.map
 import game.actors.Dwarf
 import game.objects.Block
 import game.objects.BlockType
+import gameState
 import next
 import kotlin.random.Random
 
@@ -12,7 +13,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
     private val map: Array<Array<Array<Block>>>
 
     init {
-        map = Array(height) { x ->  Array(width) { y -> Array(depth) { z-> MapGenerator.generateBlock(x, y, z) }}}
+        map = Array(height) { Array(width) { Array(depth) { z-> MapGenerator.generateBlock(z) }}}
         MapGenerator.addDwarfs(map, dwarfCount)
     }
 
@@ -33,30 +34,40 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
     }
 
     private fun isAir(x: Int, y: Int, z: Int): Boolean {
+        if (x < 0 || y < 0 || z < 0)
+            return false
         return map[x][y][z].blockType == BlockType.NONE
+    }
+
+    fun getBlock(pos: Position): Block {
+        return map[pos.x][pos.y][pos.z]
     }
 
     /**
      * If block at the coordinates is empty, returns block below.
      */
-    fun getBlock(x: Int, y: Int, z: Int): Block {
+    private fun getBlockOrBelow(x: Int, y: Int, z: Int): Block {
         return if (isAir(x, y, z) && z > 0) map[x][y][z - 1] else map[x][y][z]
+    }
+
+    fun canBeOccupied(x: Int, y: Int, z: Int): Boolean {
+        return isAir(x, y, z) && !isAir(x, y, z - 1)
     }
 
     //todo: simplify with next one
     //todo: ask why need !!
     fun getOccupantOrBlockChar(x: Int, y: Int, z: Int): String {
-        return if (map[x][y][z].occupant != null) //has dwarfs
+        return if (map[x][y][z].occupied())
             map[x][y][z].occupant!!.mapChar
         else
-            getBlock(x, y, z).blockType.mapChar
+            getBlockOrBelow(x, y, z).blockType.mapChar
     }
 
     fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int): String {
-        return if (map[x][y][z].occupant != null) //has dwarfs
+        return if (map[x][y][z].occupied())
             map[x][y][z].occupant!!.name
         else
-            getBlock(x, y, z).blockType.locale
+            getBlockOrBelow(x, y, z).blockType.locale
     }
 
     override fun toString(): String {
@@ -92,7 +103,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
     object MapGenerator {
         private val random = Random
 
-        fun generateBlock(x: Int, y: Int, z: Int): Block {
+        fun generateBlock(z: Int): Block {
             return when {
                 z > DIRT_HEIGHT + 1 -> Block(BlockType.NONE)
                 z == DIRT_HEIGHT + 1 -> generateSurface()
@@ -143,7 +154,9 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
             //while we need more dwarfs and we are still on the map
             while (dwarfsNeeded > 0 && map.indices.contains(x) && map[x].indices.contains(y)) {
                 if (map[x][y][posZ].occupant == null && map[x][y][posZ].blockType == BlockType.NONE) {
-                    map[x][y][posZ].occupant = Dwarf(x, y, posZ)
+                    val dwarf = Dwarf(x, y, posZ)
+                    map[x][y][posZ].occupant = dwarf
+                    gameState.dwarfs.add(dwarf)
                     dwarfsNeeded--
                 } else {
                     if (stepCounter == MAX_STEPS) {
@@ -167,6 +180,9 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
             NORTH, EAST, SOUTH, WEST
         }
     }
+
+    //todo: replace all x, y, z calls to position calls
+    class Position(val x: Int, val y: Int, val z: Int)
 }
 
 

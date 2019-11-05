@@ -46,3 +46,7 @@ fun cancelMode() {
 fun addDigOrder() {
     gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z))
 }
+
+fun pause() {
+    gameState.pause()
+}

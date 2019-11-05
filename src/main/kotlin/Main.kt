@@ -1,20 +1,17 @@
 import javafx.application.Platform
 import game.map.Map
 
-val gameMap = Map()
-val gameFrame = GameFrame()
 val gameState = GameState()
+val gameFrame = GameFrame()
+val gameMap = Map()
+
+const val MS_IN_TICK = 40L  //25 fps
 
 fun main() {
-    Game.start()
-}
-
-object Game: Thread() {
-    override fun run() {
-        while (gameState.gameRunning) {
-            Platform.runLater {  gameFrame.browser.engine.loadContent(gameMap.toString()) }
-            sleep(40) //25 fps
-        }
-        gameFrame.dispose()
+    while (gameState.gameRunning) {
+        gameState.tick()
+        Platform.runLater {  gameFrame.browser.engine.loadContent(gameMap.toString()) }
+        Thread.sleep(MS_IN_TICK)
     }
+    gameFrame.dispose()
 }

@@ -47,4 +47,8 @@ object Keys {
             addDigOrder()
         }
     }
+
+    fun space() {
+        pause()
+    }
 }
