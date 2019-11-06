@@ -54,20 +54,14 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return isAir(x, y, z) && !isAir(x, y, z - 1)
     }
 
-    //todo: simplify with next one
-    //todo: ask why need !!
     fun getOccupantOrBlockChar(x: Int, y: Int, z: Int): String {
-        return if (map[x][y][z].occupied())
-            map[x][y][z].occupant!!.mapChar
-        else
-            getBlockOrBelow(x, y, z).blockType.mapChar
+        return map[x][y][z].occupant?.mapChar ?: getBlockOrBelow(x, y, z).blockType.mapChar
     }
 
-    fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int): String {
-        return if (map[x][y][z].occupied())
-            map[x][y][z].occupant!!.name
-        else
-            getBlockOrBelow(x, y, z).blockType.locale
+    fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int
+
+    ): String {
+        return map[x][y][z].occupant?.name ?: getBlockOrBelow(x, y, z).blockType.locale
     }
 
     override fun toString(): String {

@@ -42,18 +42,13 @@ class GameState {
             return
         }
 
-        dwarfs.forEach { dwarf: Dwarf ->
-            if (dwarf.unassigned() && orders.isNotEmpty()) {
-                val order = orders.find { it.unassigned() }
-                if (order == null) {
-                    return
-                } else {
-                    dwarf.assignment = order
-                    order.assignee = dwarf
-                    println("Dwarf ${dwarf.name} assigned to ${order.orderType} order on [${order.x}, ${order.y}, ${order.z}]")
-                }
+        dwarfs.filter { it.unassigned() }
+            .zip(orders.filter { it.unassigned() })
+            .forEach { (dwarf, order) ->
+                dwarf.assignment = order
+                order.assignee = dwarf
+                println("Dwarf ${dwarf.name} assigned to ${order.orderType} order on [${order.x}, ${order.y}, ${order.z}]")
             }
-        }
     }
 
     private fun moveDwarfs() {
