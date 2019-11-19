@@ -11,4 +11,11 @@ class Order(val orderType: OrderType, val x: Int, val y: Int, val z: Int, var as
     fun unassigned(): Boolean {
         return assignee == null
     }
+
+    fun dispose() {
+        if (this.assignee != null) {
+            this.assignee!!.assignment = null
+            this.assignee = null
+        }
+    }
 }

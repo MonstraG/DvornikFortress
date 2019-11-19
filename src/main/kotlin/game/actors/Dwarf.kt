@@ -1,13 +1,19 @@
 package game.actors
 
+import game.actors.Dwarf.DwarfConstants.STRENGTH
 import game.map.Map
 import game.map.Map.Util.getNear
+import game.objects.Block
+import game.objects.BlockType
 import game.orders.Order
+import game.orders.OrderType
 import gameMap
+import gameState
 
 class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     object DwarfConstants {
         const val DWARF_SPEED = 5
+        const val STRENGTH = 5
     }
 
     val mapChar = "@"
@@ -20,7 +26,7 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
 
     private var moves = mutableListOf<Map.Position>()
 
-    fun move() {
+    fun act() {
         if (moves.isNotEmpty()) {
             val pos = moves.removeAt(0)
             val nextBlock = gameMap.getBlock(pos)
@@ -35,6 +41,28 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
             }
         } else {
             makePath()
+        }
+
+        if (assignment != null && moves.isEmpty()) {
+            doOrder()
+        }
+    }
+
+    private fun doOrder() {
+        when (assignment!!.orderType) {
+            OrderType.DIG -> dig(Map.Position(assignment!!.x, assignment!!.y, assignment!!.z))
+            else -> return
+        }
+    }
+
+    private fun dig(position: Map.Position) {
+        val block = gameMap.getBlock(position)
+        if (block.hardness > 0) {
+            block.hardness -= STRENGTH
+        } else {
+            gameMap.setBlock(position, Block(BlockType.NONE, null))
+            gameState.addToInventory(block.blockType)
+            gameState.completeOrder(assignment!!)
         }
     }
 

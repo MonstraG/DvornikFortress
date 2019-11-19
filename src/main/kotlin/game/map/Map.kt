@@ -44,6 +44,10 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return map[x][y][z].blockType == BlockType.NONE
     }
 
+    fun setBlock(pos: Position, block: Block) {
+        map[pos.x][pos.y][pos.z] = block
+    }
+
     fun getBlock(pos: Position): Block {
         return map[pos.x][pos.y][pos.z]
     }

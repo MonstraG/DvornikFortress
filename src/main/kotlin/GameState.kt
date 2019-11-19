@@ -1,6 +1,7 @@
 import GameState.GameStateConstants.ASSIGNMENT_WAIT_TIME
 import GameState.GameStateConstants.DAY_LENGTH
 import game.actors.Dwarf
+import game.objects.BlockType
 import game.orders.Order
 import game.orders.OrderType
 
@@ -18,6 +19,17 @@ class GameState {
 
     var tick = 0
     var paused = false
+
+    fun completeOrder(order: Order) {
+        orders.remove(order)
+        order.dispose()
+    }
+
+    private val inventory = hashMapOf<BlockType, Int>()
+
+    fun addToInventory(block: BlockType) {
+        inventory.merge(block, 1, Int::plus)
+    }
 
     fun tick() {
         if (!paused) {
@@ -52,7 +64,7 @@ class GameState {
     }
 
     private fun moveDwarfs() {
-        dwarfs.forEach { if (tick % Dwarf.DwarfConstants.DWARF_SPEED == 0) it.move() }
+        dwarfs.forEach { if (tick % Dwarf.DwarfConstants.DWARF_SPEED == 0) it.act() }
     }
 
     fun getOrderForBlock(x: Int, y: Int, z: Int): OrderType? {
