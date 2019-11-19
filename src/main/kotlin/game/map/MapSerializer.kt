@@ -3,7 +3,7 @@ package game.map
 import game.orders.OrderType
 import gameMap
 import gameState
-import input.Help
+import input.Interface
 import java.lang.StringBuilder
 
 class MapSerializer {
@@ -30,12 +30,13 @@ class MapSerializer {
         return this
     }
 
-    fun appendHelp(lineIndex: Int): MapSerializer {
-        if (lineIndex < Help.size){
-            mapStringBuilder.append(Help[lineIndex])
+    fun appendInterface(lineIndex: Int): MapSerializer {
+        if (lineIndex < Interface.size){
+            mapStringBuilder.append(Interface[lineIndex])
         }
         return this
     }
+
 
     fun appendCursorInfo(x: Int, y: Int, z: Int): MapSerializer {
         mapStringBuilder.append("position: [$x, $y, $z]")
