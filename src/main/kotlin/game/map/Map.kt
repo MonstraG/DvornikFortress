@@ -3,8 +3,13 @@ package game.map
 import game.actors.Dwarf
 import game.objects.Block
 import game.objects.BlockType
+import gameMap
 import gameState
+import javafx.geometry.Pos
 import next
+import java.lang.Math.pow
+import kotlin.math.pow
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCount: Int = 1) {
@@ -176,7 +181,49 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
     }
 
     //todo: replace all x, y, z calls to position calls
-    class Position(val x: Int, val y: Int, val z: Int)
+    class Position(var x: Int, var y: Int, var z: Int) {
+        operator fun plus(other: Position): Position {
+            return Position(this.x + other.x, this.y + other.y, this.z + other.z)
+        }
+
+        fun same(other: Position): Boolean {
+            return this.x == other.x && this.y == other.y && this.z == other.z
+        }
+
+    }
+
+    object Util {
+        fun calculateDistance(position1: Position, position2: Position): Double {
+            return sqrt(
+                (position2.x - position1.x).toDouble().pow(2) +
+                (position2.y - position1.y).toDouble().pow(2) +
+                (position2.z - position1.z).toDouble().pow(2)
+            )
+        }
+
+        private val shifts = listOf(
+            Position(1, 0, 0), Position(0, 1, 0), Position(-1, 0, 0), Position(0, -1, 0)
+        )
+
+        fun getNear(current: Position): HashSet<Position> {
+            val moves = HashSet<Position>(12)
+            for (z in -1..1) {
+                for (shift in shifts) {
+                    shift.z = z
+                    val next = current + shift
+                    if (gameMap.canBeOccupied(next.x, next.y, next.z)) {
+                        //can actually move diagonally
+                        if ((z == 0) ||
+                             z == -1 && gameMap.isAir(next.x, next.y, current.z) ||
+                            (z == 1 && gameMap.isAir(current.x, current.y, current.z + z))) {
+                            moves.add(next)
+                        }
+                    }
+                }
+            }
+            return moves
+        }
+    }
 }
 
 
