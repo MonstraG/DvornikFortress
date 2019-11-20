@@ -5,6 +5,7 @@ import game.objects.BlockType
 import game.orders.Order
 import game.orders.OrderType
 
+
 class GameState {
     object GameStateConstants {
         const val DAY_LENGTH = 24000
@@ -25,7 +26,7 @@ class GameState {
         order.dispose()
     }
 
-    private val inventory = hashMapOf<BlockType, Int>()
+    var inventory = hashMapOf<BlockType, Int>()
 
     fun addToInventory(block: BlockType) {
         inventory.merge(block, 1, Int::plus)
