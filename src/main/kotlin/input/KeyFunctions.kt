@@ -1,10 +1,9 @@
 package input
 
-import game.objects.BlockType
 import gameState
 
 //todo make help draw its contents based on gamestate
-val Interface = arrayOf(
+val help = arrayOf(
     "\tesq: exit game",
     "\tq: rise up",
     "\tz: go down",
@@ -13,21 +12,16 @@ val Interface = arrayOf(
     "\td: dig mode",
     "\tc: leave current mode",
     "\tenter: apply order",
-    "\tspace: pause/continue\n",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "\t=================",
-    "\tINVENTORY:\n",
-    "\tDirt: ${gameState.inventory[BlockType.DIRT]}",
-    "\tSTONE: ${gameState.inventory[BlockType.STONE]}",
-    "\tWOOD: ${gameState.inventory[BlockType.WOOD]}",
-    "\tGOLD: ${gameState.inventory[BlockType.GOLD]}",
-    "\tIRON: ${gameState.inventory[BlockType.IRON]}"
+    "\tspace: pause/continue\n"
 )
 
+fun displayInventory(): Array<String> {
+    val inventoryDisplay = mutableListOf("============")
+    gameState.inventory.entries.forEach {
+        inventoryDisplay.add("${it.key.locale}: ${it.value}")
+    }
+    return inventoryDisplay.toTypedArray()
+}
 
 //todo add color to key letters.
 

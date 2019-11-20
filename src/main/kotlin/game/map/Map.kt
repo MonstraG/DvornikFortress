@@ -5,9 +5,7 @@ import game.objects.Block
 import game.objects.BlockType
 import gameMap
 import gameState
-import javafx.geometry.Pos
 import next
-import java.lang.Math.pow
 import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -85,7 +83,8 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
                     serializer.appendBlock(x, y, z)
                 }
             }
-            serializer.appendInterface(y - heightBounds.first).appendNewLine()
+            serializer.appendHelpLine(y - heightBounds.first)
+                .appendInventoryLine(y - heightBounds.first).appendNewLine()
         }
         return serializer.appendCursorInfo(x, y, z).finalize()
     }
@@ -99,7 +98,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         var posZ = DIRT_HEIGHT + 1
 
         //we draw $width$ blocks to the left of the cursor, and same amount to the right
-        var width = 10
+        var width = 30
         var height = 12
     }
 
