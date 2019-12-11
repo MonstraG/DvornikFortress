@@ -17,7 +17,7 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     }
 
     val mapChar = "@"
-    val img = "src/resources/dwarf.jpg"
+    val img = "src/resources/dwarf.png"
 
     var assignment: Order? = null
 
