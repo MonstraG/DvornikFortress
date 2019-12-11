@@ -20,7 +20,6 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     val img = "src/resources/dwarf.png"
 
     var assignment: Order? = null
-
     fun unassigned(): Boolean {
         return assignment == null
     }
@@ -50,14 +49,22 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     }
 
     private fun doOrder() {
-        when (assignment!!.orderType) {
-            OrderType.DIG -> dig(Map.Position(assignment!!.x, assignment!!.y, assignment!!.z))
-            else -> return
+        assignment?.let{assignment->
+            when (assignment.orderType) {
+                OrderType.DIG -> dig(Map.Position(assignment.x, assignment.y, assignment.z))
+                OrderType.BUILD -> build(Map.Position(assignment.x, assignment.y, assignment.z),assignment.Block)
+                else -> return
+            }
         }
+
     }
 
     private fun dig(position: Map.Position) {
-        val block = gameMap.getBlock(position)
+        var block = gameMap.getBlock(position)
+        if (block.blockType == BlockType.NONE){
+            position.z = position.z-1
+            block = gameMap.getBlock(position)
+        }
         if (block.hardness > 0) {
             block.hardness -= STRENGTH
         } else {
@@ -65,6 +72,16 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
             gameState.addToInventory(block.blockType)
             gameState.completeOrder(assignment!!)
         }
+    }
+
+    fun build(position: Map.Position, blockType: BlockType) {
+        var block = gameMap.getBlock(position)
+        if (block.blockType != BlockType.NONE){
+            position.z += 1
+            block = gameMap.getBlock(position)
+        }
+        gameMap.setBlock(position, Block(blockType))
+        gameState.completeOrder(assignment!!)
     }
 
     private fun makePath() {

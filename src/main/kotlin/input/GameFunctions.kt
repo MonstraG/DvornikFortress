@@ -4,6 +4,7 @@ import bound
 import gameMap
 import gameState
 import game.map.Map
+import game.objects.Block
 import game.orders.Order
 import game.orders.OrderType
 
@@ -39,13 +40,22 @@ fun enterDigMode() {
     gameState.currentMode = OrderType.DIG
 }
 
+fun enterBuildMode(){
+    gameState.currentMode = OrderType.BUILD
+}
+
 fun cancelMode() {
     gameState.currentMode = OrderType.NONE
 }
 
 fun addDigOrder() {
-    gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z))
+    gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z, game.objects.BlockType.NONE))
 }
+
+fun addBuildOrder(block: game.objects.BlockType) {
+    gameState.orders.add(Order(OrderType.BUILD, gameMap.x, gameMap.y, gameMap.z, block))
+}
+
 
 fun pause() {
     gameState.pause()
