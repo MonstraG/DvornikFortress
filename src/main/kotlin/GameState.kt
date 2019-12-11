@@ -21,6 +21,8 @@ class GameState {
     var tick = 0
     var paused = false
 
+    var imageMode = true
+
     fun completeOrder(order: Order) {
         orders.remove(order)
         order.dispose()

@@ -36,5 +36,6 @@ val buttonMap = mapOf(
     "D" to { Keys.d() },
     "Enter" to { Keys.enter() },
     "C" to { Keys.c() },
-    "Space" to { Keys.space() }
+    "Space" to { Keys.space() },
+    "I" to { Keys.i() }
 )

@@ -5,6 +5,7 @@ import gameMap
 import gameState
 import input.displayInventory
 import input.help
+import java.io.File
 import java.lang.StringBuilder
 
 class MapSerializer {
@@ -28,7 +29,11 @@ class MapSerializer {
             //get color of order, if null then default color.
             gameState.getOrderForBlock(x, y, z)?.color ?: OrderType.NONE.color
         }
-        mapStringBuilder.append("<span style=\"color:" + color + "\" >${gameMap.getOccupantOrBlockChar(x, y, z)}</span>")
+        if (gameState.imageMode) {
+            mapStringBuilder.append("<span><img src=\"" + File(gameMap.getOccupantOrBlockImg(x, y, z)).toURI() + "\"></span>")
+        } else {
+            mapStringBuilder.append("<span style=\"color:" + color + "\" >${gameMap.getOccupantOrBlockChar(x, y, z)}</span>")
+        }
         return this
     }
 

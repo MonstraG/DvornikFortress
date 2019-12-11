@@ -50,3 +50,7 @@ fun addDigOrder() {
 fun pause() {
     gameState.pause()
 }
+
+fun changeGraphicsMode() {
+    gameState.imageMode = !gameState.imageMode
+}

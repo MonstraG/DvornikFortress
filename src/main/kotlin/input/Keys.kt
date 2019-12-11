@@ -51,4 +51,8 @@ object Keys {
     fun space() {
         pause()
     }
+
+    fun i() {
+        changeGraphicsMode()
+    }
 }
