@@ -1,8 +1,8 @@
 /**
- * Returns value bound by 0 and max value
+ * Returns value bound by min (included) and max (not included)
  */
-fun bound(value: Int, max: Int): Int {
-    return value.coerceAtLeast(0).coerceAtMost(max - 1)
+fun Int.bound(min: Int, max: Int): Int {
+    return this.coerceAtLeast(min).coerceAtMost(max - 1)
 }
 
 /**

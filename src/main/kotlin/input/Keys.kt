@@ -46,7 +46,12 @@ object Keys {
     fun enter() {
         when (gameState.currentMode) {
             OrderType.DIG -> addDigOrder()
-            OrderType.BUILD -> addBuildOrder(BlockType.WOOD)
+            OrderType.BUILD -> {
+                val selectedBlock = gameState.inventory.getSelected()
+                if (selectedBlock != null) {
+                    addBuildOrder(selectedBlock.block)
+                }
+            }
             else -> return
         }
     }
@@ -63,5 +68,13 @@ object Keys {
         if (gameState.currentMode != OrderType.BUILD) {
             enterBuildMode()
         }
+    }
+
+    fun numpad8(){
+        moveUpInInventory()
+    }
+
+    fun numpad2(){
+        moveDownInInventory()
     }
 }

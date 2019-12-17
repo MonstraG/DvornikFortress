@@ -1,7 +1,7 @@
 import GameState.GameStateConstants.ASSIGNMENT_WAIT_TIME
 import GameState.GameStateConstants.DAY_LENGTH
+import game.Inventory
 import game.actors.Dwarf
-import game.objects.BlockType
 import game.orders.Order
 import game.orders.OrderType
 
@@ -28,11 +28,7 @@ class GameState {
         order.dispose()
     }
 
-    var inventory = hashMapOf<BlockType, Int>()
-
-    fun addToInventory(block: BlockType) {
-        inventory.merge(block, 1, Int::plus)
-    }
+    var inventory = Inventory()
 
     fun tick() {
         if (!paused) {
@@ -72,6 +68,10 @@ class GameState {
 
     fun getOrderForBlock(x: Int, y: Int, z: Int): OrderType? {
         return orders.find { order -> order.x == x && order.y == y && order.z == z }?.orderType
+    }
+
+    fun getOrderForBlockOrBelow(x: Int, y: Int, z: Int): OrderType? {
+        return getOrderForBlock(x, y, z) ?: return getOrderForBlock(x, y, z - 1)
     }
 }
 

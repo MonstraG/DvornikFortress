@@ -1,10 +1,10 @@
 package game.map
 
+import game.displayInventory
+import game.getHelpLines
 import game.orders.OrderType
 import gameMap
 import gameState
-import input.displayInventory
-import input.help
 import java.io.File
 import java.lang.StringBuilder
 
@@ -27,17 +27,20 @@ class MapSerializer {
             gameState.currentMode.hoverColor
         } else {
             //get color of order, if null then default color.
-            gameState.getOrderForBlock(x, y, z)?.color ?: OrderType.NONE.color
+            gameState.getOrderForBlockOrBelow(x, y, z)?.color ?: OrderType.NONE.color
         }
+
+        val opacity: Double = if (gameMap.isEmpty(x, y, z)) 0.75 else 1.0
         if (gameState.imageMode) {
-            mapStringBuilder.append("<span><img src=\"" + File(gameMap.getOccupantOrBlockImg(x, y, z)).toURI() + "\"></span>")
+            mapStringBuilder.append("<span style=\"opacity: $opacity;\"><img src=\"${File(gameMap.getOccupantOrBlockImg(x, y, z)).toURI()}</span>")
         } else {
-            mapStringBuilder.append("<span style=\"color:" + color + "\" >${gameMap.getOccupantOrBlockChar(x, y, z)}</span>")
+            mapStringBuilder.append("<span style=\"color: $color; opacity: $opacity;\">${gameMap.getOccupantOrBlockChar(x, y, z)}</span>")
         }
         return this
     }
 
     fun appendHelpLine(lineIndex: Int): MapSerializer {
+        val help = getHelpLines()
         if (lineIndex < help.size){
             mapStringBuilder.append(help[lineIndex])
         }
@@ -45,6 +48,7 @@ class MapSerializer {
     }
 
     fun appendInventoryLine(lineIndex: Int): MapSerializer {
+        val help = getHelpLines()
         if (inventoryDisplay == null) {
             inventoryDisplay = displayInventory()
         }

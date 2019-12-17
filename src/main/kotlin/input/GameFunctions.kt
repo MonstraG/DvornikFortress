@@ -13,27 +13,27 @@ fun exit() {
 }
 
 fun riseUp() {
-    gameMap.z = bound(gameMap.z + 1, 64)
+    gameMap.z = (gameMap.z + 1).bound(0, 64)
 }
 
 fun goDown() {
-    gameMap.z = bound(gameMap.z - 1, 64)
+    gameMap.z = (gameMap.z - 1).bound(0, 64)
 }
 
 fun moveUp() {
-    gameMap.y = bound(gameMap.y - 1, gameMap.height)
+    gameMap.y = (gameMap.y - 1).bound(0, gameMap.height)
 }
 
 fun moveDown() {
-    gameMap.y = bound(gameMap.y + 1, gameMap.height)
+    gameMap.y = (gameMap.y + 1).bound(0, gameMap.height)
 }
 
 fun moveLeft() {
-    gameMap.x = bound(gameMap.x - 1, gameMap.width)
+    gameMap.x = (gameMap.x - 1).bound(0, gameMap.width)
 }
 
 fun moveRight() {
-    gameMap.x = bound(gameMap.x + 1, gameMap.width)
+    gameMap.x = (gameMap.x + 1).bound(0, gameMap.width)
 }
 
 fun enterDigMode() {
@@ -63,13 +63,14 @@ fun addDigOrder() {
     }
 
     if (gameMap.isAir(pos)) {
-        pos.z -= 1
-
-        if (gameMap.isAir(pos)) {
+        if (gameMap.isAir(gameMap.x, gameMap.y, gameMap.z - 1)) {
+            return
+        } else {
+            gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z - 1))
             return
         }
     }
-    gameState.orders.add(Order(OrderType.DIG, pos))
+    gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z))
 }
 
 fun addBuildOrder(block: BlockType) {
@@ -77,13 +78,13 @@ fun addBuildOrder(block: BlockType) {
     if (posAlreadyInOrder(pos)) {
         return
     }
-    if (!gameState.inventory.contains(block)) {
+
+    if (!gameState.inventory.has(block)) {
         return
     }
 
     gameState.orders.add(Order(OrderType.BUILD, pos, block))
 }
-
 
 fun pause() {
     gameState.pause()
@@ -91,4 +92,16 @@ fun pause() {
 
 fun changeGraphicsMode() {
     gameState.imageMode = !gameState.imageMode
+}
+
+fun moveUpInInventory() {
+    if (gameState.currentMode == OrderType.BUILD) {
+        gameState.inventory.moveSelectedUp()
+    }
+}
+
+fun moveDownInInventory() {
+    if (gameState.currentMode == OrderType.BUILD) {
+        gameState.inventory.moveSelectedDown()
+    }
 }

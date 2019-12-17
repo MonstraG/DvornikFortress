@@ -1,31 +1,5 @@
 package input
 
-import gameState
-
-//todo make help draw its contents based on gamestate
-val help = arrayOf(
-    "\tesq: exit game",
-    "\tq: rise up",
-    "\tz: go down",
-    "\tarrows: move around",
-    "",
-    "\td: dig mode",
-    "\tb: build mode",
-    "\tc: leave current mode",
-    "\tenter: apply order",
-    "\tspace: pause/continue\n"
-)
-
-fun displayInventory(): Array<String> {
-    val inventoryDisplay = mutableListOf("============")
-    gameState.inventory.entries.forEach {
-        inventoryDisplay.add("${it.key.locale}: ${it.value}")
-    }
-    return inventoryDisplay.toTypedArray()
-}
-
-//todo add color to key letters.
-
 val buttonMap = mapOf(
     "Esq" to { Keys.esq() },
     "Up" to { Keys.upArrow() },
@@ -39,5 +13,7 @@ val buttonMap = mapOf(
     "C" to { Keys.c() },
     "Space" to { Keys.space() },
     "I" to { Keys.i() },
-    "B" to { Keys.b() }
+    "B" to { Keys.b() },
+    "Numpad 8" to { Keys.numpad8() },
+    "Numpad 2" to { Keys.numpad2() }
 )

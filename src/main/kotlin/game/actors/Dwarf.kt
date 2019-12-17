@@ -61,7 +61,7 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
             block.hardness -= STRENGTH
         } else {
             gameMap.setBlock(position, Block(BlockType.NONE, null))
-            gameState.addToInventory(block.blockType)
+            gameState.inventory.add(block.blockType)
             gameState.completeOrder(assignment!!)
             move(position)
         }
@@ -78,9 +78,10 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     private fun build(position: Map.Position, blockType: BlockType) {
         val block = gameMap.getBlock(position)
         if (block.blockType != BlockType.NONE){
-            return
+            gameState.completeOrder(assignment!!)
         }
         gameMap.setBlock(position, Block(blockType))
+        gameState.inventory.remove(blockType)
         gameState.completeOrder(assignment!!)
     }
 

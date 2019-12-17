@@ -86,6 +86,7 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         }
         return getBlock(pos).getDisplayChar()
     }
+
     fun getOccupantOrBlockImg(x: Int, y: Int, z: Int): String {
         val pos = Position(x, y, z)
         if (isEmpty(x, y, z)) {
