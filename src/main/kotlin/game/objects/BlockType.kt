@@ -8,5 +8,4 @@ enum class BlockType(val mapChar: String, val img: String,  val locale: String, 
     GOLD("G", "", "Gold", 85),
     IRON("0", "", "Iron", 85),
     BEDROCK("░", "", "Bedrock", 999999999)
-
 }

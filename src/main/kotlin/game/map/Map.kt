@@ -36,10 +36,16 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return this.x == x && this.y == y
     }
 
-    private fun isAir(x: Int, y: Int, z: Int): Boolean {
+    fun isAir(x: Int, y: Int, z: Int): Boolean {
         if (x < 0 || y < 0 || z < 0)
             return false
         return map[x][y][z].blockType == BlockType.NONE
+    }
+
+    fun isAir(pos: Position): Boolean {
+        if (pos.x < 0 || pos.y < 0 || pos.z < 0)
+            return false
+        return getBlock(pos).blockType == BlockType.NONE
     }
 
     fun setBlock(pos: Position, block: Block) {
@@ -57,21 +63,43 @@ class Map(val height: Int = 256, val width: Int = 256, depth: Int = 64, dwarfCou
         return if (isAir(x, y, z) && z > 0) map[x][y][z - 1] else map[x][y][z]
     }
 
+    /**
+     * returns true, if is empty and occupied
+     * otherwise false.
+     */
+    fun isEmpty(x: Int, y: Int, z: Int): Boolean {
+        return isAir(x, y, z) && !getBlock(Position(x, y, z)).occupied()
+    }
+
+    /**
+     * returns true, if is empty and not occupied, and there is something to stand on.
+     * otherwise false.
+     */
     fun canBeOccupied(x: Int, y: Int, z: Int): Boolean {
-        return isAir(x, y, z) && !isAir(x, y, z - 1)
+        return isEmpty(x, y, z) && !isAir(x, y, z - 1)
     }
 
     fun getOccupantOrBlockChar(x: Int, y: Int, z: Int): String {
-        return map[x][y][z].occupant?.mapChar ?: getBlockOrBelow(x, y, z).blockType.mapChar
+        val pos = Position(x, y, z)
+        if (isEmpty(x, y, z)) {
+            pos.z -= 1
+        }
+        return getBlock(pos).getDisplayChar()
     }
     fun getOccupantOrBlockImg(x: Int, y: Int, z: Int): String {
-        return map[x][y][z].occupant?.img ?: getBlockOrBelow(x, y, z).blockType.img
+        val pos = Position(x, y, z)
+        if (isEmpty(x, y, z)) {
+            pos.z -= 1
+        }
+        return getBlock(pos).getDisplayImg()
     }
 
-    fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int
-
-    ): String {
-        return map[x][y][z].occupant?.name ?: getBlockOrBelow(x, y, z).blockType.locale
+    fun getOccupantOrBlockLocale(x: Int, y: Int, z: Int): String {
+        val pos = Position(x, y, z)
+        if (isEmpty(x, y, z)) {
+            pos.z -= 1
+        }
+        return getBlock(pos).getDisplayLocale()
     }
 
     override fun toString(): String {

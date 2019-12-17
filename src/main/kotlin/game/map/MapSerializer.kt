@@ -56,10 +56,15 @@ class MapSerializer {
         return this
     }
 
-
     fun appendCursorInfo(x: Int, y: Int, z: Int): MapSerializer {
-        mapStringBuilder.append("position: [$x, $y, $z]")
-        mapStringBuilder.append("&emsp;&emsp;${gameMap.getOccupantOrBlockLocale(x, y, z)}")
+        val prefix = if (gameMap.isEmpty(x, y, z)) {
+            mapStringBuilder.append("position: [$x, $y, ${z-1}]")
+            "below: "
+        } else {
+            mapStringBuilder.append("position: [$x, $y, ${z}]")
+            ""
+        }
+        mapStringBuilder.append("&emsp;&emsp;${prefix}${gameMap.getOccupantOrBlockLocale(x, y, z)}")
         mapStringBuilder.append("&emsp;&emsp;time: ${gameState.tick}")
         return this
     }

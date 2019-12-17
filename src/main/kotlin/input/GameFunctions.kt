@@ -1,10 +1,10 @@
 package input
 
 import bound
+import game.map.Map
+import game.objects.BlockType
 import gameMap
 import gameState
-import game.map.Map
-import game.objects.Block
 import game.orders.Order
 import game.orders.OrderType
 
@@ -44,16 +44,44 @@ fun enterBuildMode(){
     gameState.currentMode = OrderType.BUILD
 }
 
-fun cancelMode() {
+fun leaveAnyMode() {
     gameState.currentMode = OrderType.NONE
 }
 
-fun addDigOrder() {
-    gameState.orders.add(Order(OrderType.DIG, gameMap.x, gameMap.y, gameMap.z, game.objects.BlockType.NONE))
+fun getOrderForPos(pos: Map.Position): Order? {
+    return gameState.orders.find { order -> order.x == pos.x && order.y == pos.y && order.z == pos.z }
 }
 
-fun addBuildOrder(block: game.objects.BlockType) {
-    gameState.orders.add(Order(OrderType.BUILD, gameMap.x, gameMap.y, gameMap.z, block))
+fun posAlreadyInOrder(pos: Map.Position): Boolean {
+    return getOrderForPos(pos) != null
+}
+
+fun addDigOrder() {
+    val pos = Map.Position(gameMap.x, gameMap.y, gameMap.z)
+    if (posAlreadyInOrder(pos)) {
+        return
+    }
+
+    if (gameMap.isAir(pos)) {
+        pos.z -= 1
+
+        if (gameMap.isAir(pos)) {
+            return
+        }
+    }
+    gameState.orders.add(Order(OrderType.DIG, pos))
+}
+
+fun addBuildOrder(block: BlockType) {
+    val pos = Map.Position(gameMap.x, gameMap.y, gameMap.z)
+    if (posAlreadyInOrder(pos)) {
+        return
+    }
+    if (!gameState.inventory.contains(block)) {
+        return
+    }
+
+    gameState.orders.add(Order(OrderType.BUILD, pos, block))
 }
 
 

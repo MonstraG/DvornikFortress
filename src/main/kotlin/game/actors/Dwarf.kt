@@ -33,11 +33,7 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
             if (nextBlock.occupied() || !gameMap.canBeOccupied(pos.x, pos.y, pos.z)) {
                 makePath()
             } else {
-                gameMap.getBlock(Map.Position(this.x, this.y, this.z)).occupant = null
-                nextBlock.occupant = this
-                this.x = pos.x
-                this.y = pos.y
-                this.z = pos.z
+                move(pos)
             }
         } else {
             makePath()
@@ -52,7 +48,7 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
         assignment?.let{assignment->
             when (assignment.orderType) {
                 OrderType.DIG -> dig(Map.Position(assignment.x, assignment.y, assignment.z))
-                OrderType.BUILD -> build(Map.Position(assignment.x, assignment.y, assignment.z),assignment.Block)
+                OrderType.BUILD -> build(Map.Position(assignment.x, assignment.y, assignment.z), assignment.Block)
                 else -> return
             }
         }
@@ -60,25 +56,29 @@ class Dwarf(var x: Int, var y: Int, var z: Int, val name: String = "Dwarf") {
     }
 
     private fun dig(position: Map.Position) {
-        var block = gameMap.getBlock(position)
-        if (block.blockType == BlockType.NONE){
-            position.z = position.z-1
-            block = gameMap.getBlock(position)
-        }
+        val block = gameMap.getBlock(position)
         if (block.hardness > 0) {
             block.hardness -= STRENGTH
         } else {
             gameMap.setBlock(position, Block(BlockType.NONE, null))
             gameState.addToInventory(block.blockType)
             gameState.completeOrder(assignment!!)
+            move(position)
         }
     }
 
-    fun build(position: Map.Position, blockType: BlockType) {
-        var block = gameMap.getBlock(position)
+    private fun move(position: Map.Position) {
+        gameMap.getBlock(Map.Position(this.x, this.y, this.z)).occupant = null
+        gameMap.getBlock(position).occupant = this
+        this.x = position.x
+        this.y = position.y
+        this.z = position.z
+    }
+
+    private fun build(position: Map.Position, blockType: BlockType) {
+        val block = gameMap.getBlock(position)
         if (block.blockType != BlockType.NONE){
-            position.z += 1
-            block = gameMap.getBlock(position)
+            return
         }
         gameMap.setBlock(position, Block(blockType))
         gameState.completeOrder(assignment!!)

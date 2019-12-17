@@ -10,6 +10,7 @@ val help = arrayOf(
     "\tarrows: move around",
     "",
     "\td: dig mode",
+    "\tb: build mode",
     "\tc: leave current mode",
     "\tenter: apply order",
     "\tspace: pause/continue\n"
@@ -38,6 +39,5 @@ val buttonMap = mapOf(
     "C" to { Keys.c() },
     "Space" to { Keys.space() },
     "I" to { Keys.i() },
-    "B" to { Keys.b() },
-    "W" to { Keys.w() }
+    "B" to { Keys.b() }
 )

@@ -19,9 +19,9 @@ class GameState {
     val dwarfs = mutableListOf<Dwarf>()
 
     var tick = 0
-    var paused = false
+    private var paused = false
 
-    var imageMode = true
+    var imageMode = false
 
     fun completeOrder(order: Order) {
         orders.remove(order)
