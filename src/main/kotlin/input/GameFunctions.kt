@@ -83,6 +83,10 @@ fun addBuildOrder(block: BlockType) {
         return
     }
 
+    if (!gameMap.isEmpty(gameMap.x, gameMap.y, gameMap.z)) {
+        return
+    }
+
     gameState.orders.add(Order(OrderType.BUILD, pos, block))
 }
 
